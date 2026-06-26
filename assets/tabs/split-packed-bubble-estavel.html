@@ -1,0 +1,356 @@
+<style>
+body{
+    font-family:Inter,sans-serif;
+    background:transparent;
+}
+
+.highcharts-figure{
+    width:100%;
+    margin:0 auto;
+}
+
+#container{
+    height:850px;
+}
+
+.highcharts-description{
+    margin-top:20px;
+    padding:18px;
+    border-radius:12px;
+    background:#f5f7fa;
+    font-size:.95rem;
+    line-height:1.6;
+}
+</style>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+
+    <p class="highcharts-description">
+
+        <strong>Sistema REDE • Fatores Reguladores de Guilherme</strong><br><br>
+
+        O gráfico apresenta os quatro eixos que sustentam a estabilidade,
+        participação social, regulação emocional e desenvolvimento
+        integral de Guilherme.
+
+    </p>
+</figure>
+
+<script>
+
+Highcharts.chart('container', {
+
+    chart:{
+        type:'packedbubble',
+        height:850,
+        spacing:[30,30,30,30]
+    },
+
+    title:{
+        text:'Sistema REDE • Fatores Reguladores de Guilherme'
+    },
+
+    subtitle:{
+        text:'Integração entre Eixo Terapêutico, Familiar, Ambiental e Biológico'
+    },
+
+    tooltip:{
+        useHTML:true,
+        pointFormat:
+        '<b>{point.name}</b><br>' +
+        'Impacto Regulador: <b>{point.value}</b><br>' +
+        '{point.desc}'
+    },
+
+    colors:[
+        '#2F80ED',
+        '#F2994A',
+        '#27AE60',
+        '#8E63E6'
+    ],
+
+    plotOptions:{
+packedbubble:{
+
+    minSize:'12%',
+    maxSize:'40%',
+
+    zMin:0,
+    zMax:60,
+
+    useSimulation:true,
+
+    layoutAlgorithm:{
+        splitSeries:true,
+        parentNodeLimit:false,
+        dragBetweenSeries:false,
+        seriesInteraction:false,
+        gravitationalConstant:0.003,
+        bubblePadding:25
+    },
+
+    dataLabels:{
+        enabled:true,
+        format:'{point.name}',
+        style:{
+            color:'#fff',
+            textOutline:'none',
+            fontSize:'11px',
+            fontWeight:'600'
+        }
+    }
+}
+        /*packedbubble:{
+            useSimulation:true,
+            parentNode:{
+                allowPointSelect:false
+            },
+            minSize:'10%',
+            maxSize:'55%',
+
+            zMin:0,
+            zMax:100,
+
+        layoutAlgorithm:{
+            splitSeries:true,
+            parentNodeLimit:false,
+            dragBetweenSeries:false,
+            seriesInteraction:false,
+            gravitationalConstant:0.003,
+            bubblePadding:25
+            },
+
+            dataLabels:{
+                enabled:true,
+                format:'{point.name}',
+                    filter:{
+                    property:'value',
+                    operator:'>',
+                    value:80
+                    },
+                style:{
+                    color:'#ffffff',
+                    textOutline:'none',
+                    fontWeight:'600'
+                }
+            }
+        }*/
+
+        
+    },
+
+    series:[
+
+    /* =====================================================
+       EIXO TERAPÊUTICO
+    ===================================================== */
+
+    {
+        name:'🔵 Eixo Terapêutico',
+        parentNode:{
+            id:'terapeutico'
+        },
+        data:[
+
+        {
+            name:'Música',
+            value:95,
+            desc:'Principal recurso espontâneo de regulação emocional.'
+        },
+
+        {
+            name:'Autorregulação',
+            value:90,
+            desc:'Capacidade crescente de reconhecer estados internos.'
+        },
+
+        {
+            name:'Antecipação',
+            value:85,
+            desc:'Preparação prévia reduz ansiedade.'
+        },
+
+        {
+            name:'Arte',
+            value:80,
+            desc:'Canal expressivo importante.'
+        },
+
+        {
+            name:'Psicoterapia',
+            value:75,
+            desc:'Suporte para desenvolvimento emocional.'
+        },
+
+        {
+            name:'Nomeação Emocional',
+            value:70,
+            desc:'Identificação e comunicação dos sentimentos.'
+        }
+
+        ]
+    },
+
+    /* =====================================================
+       EIXO FAMILIAR
+    ===================================================== */
+
+    {
+        name:'🟠 Eixo Familiar',
+        parentNode:{
+                id:'familiar'
+            },
+        data:[
+
+        {
+            name:'Comunicação Clara',
+            value:95,
+            desc:'Reduz incertezas e conflitos.'
+        },
+
+        {
+            name:'Mediação Afetiva',
+            value:90,
+            desc:'Favorece segurança emocional.'
+        },
+
+        {
+            name:'Validação',
+            value:88,
+            desc:'Reconhecimento legítimo das emoções.'
+        },
+
+        {
+            name:'Pertencimento',
+            value:85,
+            desc:'Fortalece identidade e vínculo.'
+        },
+
+        {
+            name:'Convivência',
+            value:82,
+            desc:'Participação familiar cotidiana.'
+        },
+
+        {
+            name:'Rituais',
+            value:80,
+            desc:'Encerramentos previsíveis.'
+        },
+
+        {
+            name:'Responsabilidades',
+            value:70,
+            desc:'Desenvolvimento de autonomia.'
+        }
+
+        ]
+    },
+
+    /* =====================================================
+       EIXO AMBIENTAL
+    ===================================================== */
+
+    {
+        name:'🟢 Eixo Ambiental',
+        parentNode:{
+                id:'ambiental'
+            },
+        data:[
+
+      {
+    name:'Previsibilidade',
+    value:60
+},
+{
+    name:'Programação Visual',
+    value:55
+},
+{
+    name:'Antecipação Eventos',
+    value:50
+},
+{
+    name:'Espaço Seguro',
+    value:45
+},
+{
+    name:'Rotina',
+    value:40
+},
+{
+    name:'Controle Sensorial',
+    value:35
+},
+{
+    name:'Ambiente Conhecido',
+    value:30
+}
+        ]
+    },
+
+    /* =====================================================
+       EIXO BIOLÓGICO
+    ===================================================== */
+
+    {
+        name:'🟣 Eixo Biológico',
+        parentNode:{
+                id:'biologico'
+            },
+        data:[
+
+        {
+            name:'Sono',
+            value:90,
+            desc:'Base fisiológica da regulação.'
+        },
+
+        {
+            name:'Recuperação',
+            value:88,
+            desc:'Tempo necessário após demandas.'
+        },
+
+        {
+            name:'Ansiedade',
+            value:85,
+            desc:'Monitoramento contínuo.'
+        },
+
+        {
+            name:'Energia Social',
+            value:80,
+            desc:'Capacidade variável de interação.'
+        },
+
+        {
+            name:'Estabilidade Física',
+            value:78,
+            desc:'Condição corporal geral.'
+        },
+
+        {
+            name:'Alimentação',
+            value:75,
+            desc:'Rotina alimentar previsível.'
+        },
+
+        {
+            name:'Acompanhamento Clínico',
+            value:70,
+            desc:'Monitoramento de saúde.'
+        }
+
+        ]
+    }
+
+    ]
+});
+</script>

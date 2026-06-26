@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>GeoRPG SaaS</title>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { getAuth, signInAnonymously } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG FIREBASE */
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "ID",
+  appId: "APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+/* login simples aluno */
+await signInAnonymously(auth);
+
+/* 👤 usuário atual */
+let userId = null;
+
+auth.onAuthStateChanged(user => {
+    if (user) {
+        userId = user.uid;
+        initUser();
+    }
+});
+
+/* 🧑‍🎓 cria aluno no banco */
+async function initUser() {
+    const ref = doc(db, "students", userId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+        await setDoc(ref, {
+            xp: 0,
+            level: 1,
+            name: "Explorador"
+        });
+    }
+
+    loadUser();
+}
+
+/* 📊 carregar dados */
+async function loadUser() {
+    const ref = doc(db, "students", userId);
+    const snap = await getDoc(ref);
+
+    const data = snap.data();
+
+    document.getElementById("xp").innerText = data.xp;
+    document.getElementById("level").innerText = data.level;
+}
+
+/* ⭐ adicionar XP */
+window.addXP = async function(amount) {
+    const ref = doc(db, "students", userId);
+    const snap = await getDoc(ref);
+
+    let xp = snap.data().xp + amount;
+    let level = Math.floor(xp / 50) + 1;
+
+    await updateDoc(ref, { xp, level });
+
+    loadUser();
+}
+
+/* 🗺️ GOOGLE MAPS */
+window.initMap = function () {
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -14.2350, lng: -51.9253 },
+        zoom: 4
+    });
+
+    /* exemplo de missões */
+    const locations = [
+        {
+            name: "Amazônia",
+            pos: { lat: -3, lng: -60 },
+            xp: 15,
+            question: "A Amazônia é o maior bioma do Brasil?"
+        },
+        {
+            name: "São Paulo",
+            pos: { lat: -23.5, lng: -46.6 },
+            xp: 10,
+            question: "São Paulo é um centro industrial?"
+        }
+    ];
+
+    locations.forEach(loc => {
+
+        const marker = new google.maps.Marker({
+            position: loc.pos,
+            map,
+            title: loc.name
+        });
+
+        marker.addListener("click", () => {
+            const answer = confirm(loc.question + "\n\nClique em OK para responder corretamente.");
+
+            if (answer) {
+                addXP(loc.xp);
+                alert("✔ Missão concluída +" + loc.xp + " XP");
+            }
+        });
+    });
+};
+
+window.onload = initMap;
+</script>
+
+<style>
+body { margin:0; font-family:Arial; }
+#top {
+    padding:10px;
+    background:#f5f5f5;
+    display:flex;
+    justify-content:space-between;
+}
+#map { height: 90vh; }
+</style>
+</head>
+
+<body>
+
+<div id="top">
+    🧭 GeoRPG SaaS
+    ⭐ XP: <span id="xp">0</span>
+    🏅 Nível: <span id="level">1</span>
+</div>
+
+<div id="map"></div>
+
+</body>
+</html>
